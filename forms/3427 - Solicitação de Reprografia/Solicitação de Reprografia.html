@@ -1,0 +1,491 @@
+<!--*************************||  Reprografia - Versão 1 ||*****************************
+Gestor do Processo: MARIA SUZETE OLIVEIRA DA SILVA 
+Unidade Gestora: USN
+Gerente da unidade: LUANA DINIZ DA SILVA MONTEIRO
+Diretor da Área:  ANANDA DA SILVA CARVALHO
+
+Equipe de Desenvolvimento:
+Main Developer: PAULO VINÍCIUS BONATES LIRA
+Developer Support:  SERGIO FIGUEREDO SOUZA
+Project Manager: DANIEL DE AZEVEDO CASAS 
+**************************||  Powered by ATIC - SEBRAE/AM ||*************************-->
+<html>
+
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css" />
+	<link type="text/css" rel="stylesheet" href="SEBRAE.css"/>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+	<script type="text/javascript" src="serviceValue.js"></script>
+	<script type="text/javascript" src="acao.js"></script>
+	<script type="text/javascript" src="projeto.js"></script>
+	<script type="text/javascript" src="unidade.js"></script>
+
+	<meta charset="utf-8">
+
+	<link href="/style-guide/css/fluig-style-guide-filter.min.css" rel="stylesheet" type="text/css">
+	<link href="/style-guide/css/fluig-style-guide-ratingstars.min.css" rel="stylesheet" type="text/css">
+	<script src="/style-guide/js/fluig-style-guide-filter.min.js"></script>
+	<script src="/style-guide/js/fluig-style-guide-ratingstars.min.js"></script>
+
+	<style type="text/css">
+		.Obrigatorio {
+			color: red;
+		}
+	</style>
+
+</head>
+
+<body onload="HabilitarTipo()">
+<div class="fluig-style-guide">
+<form name="form" role="form">
+
+	<input type="hidden" name="codProjeto" id="codProjeto">
+	<input type="hidden" name="codAcao" id="codAcao">
+	<input type="hidden" name="codRecurso" id="codRecurso">
+	<input type="hidden" name="hd_numSuperior" id="numSuperior">
+	<input type="hidden" name="hdn_validateOrcamento" id="hdn_validateOrcamento">
+	<input type="hidden" name="hdn_Destino" id="hdn_Destino">
+	<input type="hidden" name="hdn_diretoria" id="hdn_diretoria">
+	<input type="hidden" name="hdn_dirAprv" id="hdn_dirAprv">
+	<input type="hidden" name="hdn_gerAprv" id="hdn_gerAprv">
+
+	<!-- Abertura do Panel -->
+
+	<div class="panel-top">
+	<div class="panel-h">
+		<h1>
+			<i class="fluigicon fluigicon-print icon-xl img"></i><b>Solicitação de Reprografia</b>
+		</h1>
+	</div>
+	</div>
+
+	<div class="panel-internal" id="Logistica">
+	<div class="panel-h">
+		<h3 class="panel-title">
+			<b>4. Logística</b>
+		</h3>
+	</div>
+	<div class="panel-body">
+	
+	<div class="col-md-3">
+	<div class="form-group">
+		<label for="slc_NomeResponsavel">Nome Responsável:</label>
+		<select class="form-control" name="slc_NomeResponsavel" id="slc_NomeResponsavel"
+			dataset="colleague" datasetkey="colleagueId" datasetvalue="colleagueName"></select>
+	</div>
+	</div>
+	<div class="col-md-3">
+	<div class="form-group">
+		<label for="slc_Tipo">Tipo:</label>
+		<select class="form-control" name="slc_Tipo" id="slc_Tipo" onchange="HabilitarTipo()">
+			<option value="Selecione">Selecione</option>
+			<option value="Terrestre">Terrestre</option>
+			<option value="Aereo">Aéreo</option>
+			<option value="Fluvial">Fluvial</option>
+			<option value="Retirar">A retirar</option>	
+		</select>
+	</div>
+	</div>
+	<div class="col-md-3">
+	<div class="form-group">
+		<label form="dt_DataEnvio">Data de Envio:</label>
+		<input type="date" class="form-control" name="dt_DataEnvio" id="dt_DataEnvio"> <!--onchange="PrevisaoEntrega()"-->
+	</div>
+	</div>
+	<div class="col-md-3">
+	<div class="form-group">
+		<label form="dt_DataChegada">Previsão de Chegada:</label>
+		<input type="date" class="form-control" name="dt_DataChegada" id="dt_DataChegada">
+	</div>
+	</div>
+	<div class="col-md-6">
+	<div class="form-group">
+		<label for="txt_Informacoes" id="txt_InfoEmba">Informações da Embarcação</label>
+		<label for="txt_Informacoes" id="txt_InfoVeic">Informações do Veículo</label>
+		<label for="txt_Informacoes" id="txt_InfoVoo">Informações do Vôo</label>
+		<textarea class="form-control" rows="3" name="txt_Informacoes" id="txt_Informacoes"></textarea> 
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<!------------------------------------------------------Painel Cabeçalho Avaliação do Evento-------------------------------------------------------->
+	<div class="panel panel-primary" id="Avaliacao">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<b>5. Avaliação do Serviço<span class="Obrigatorio"><strong>*</strong></span></b>
+		</h3>
+	</div>
+	<!------------------------------------------------------------Painel Avaliação do Evento------------------------------------------------------------>
+	<div class="panel-body">
+	<div class="col-md-3">
+	<div class="form-group">
+		<label for="dt_recebment">Data de recebimento<span class="Obrigatorio"><strong>*</strong></span>:</label>
+		<input type="date" class="form-control" name="dt_recebment" i="dt_recebment"> 
+	</div>
+	</div>
+	<div class="col-md-10">
+	<div class="form-group">
+		<label for="rating_numbers1">Qual o grau de satisfação com a Qualidade do produto/serviço?</label>
+		<div class="rating-numbers1"></div>
+		<input type="hidden" name="rating_numbers1" id="rating_numbers1">
+	</div>
+	</div>
+	<div class="col-md-10">
+	<div class="form-group">
+		<label for="rating_numbers2">Qual o grau de satisfação com o tempo de conclusão/entrega do material?</label>
+		<div class="rating-numbers2"></div>
+		<input type="hidden" name="rating_numbers2" id="rating_numbers2">
+	</div>
+	</div>
+	<div class="col-md-10">
+	<div class="form-group">
+		<label for="rating_numbers3">Em relação à satisfação com o atendimento recebido da USN?</label>
+		<div class="rating-numbers3"></div>
+		<input type="hidden" name="rating_numbers3" id="rating_numbers3">
+	</div>
+	</div>
+	<div class="col-md-10">
+		<label for="txt_Comentario">Gostaria de fazer algum comentário ou sugestão?</label>
+		<textarea class="form-control" rows="3" name="txt_Comentario" id="txt_Comentario"></textarea>
+	</div>
+	</div>
+	</div>
+	<!-----------------------------------------------------Fechamento Painel Avaliação do Evento--------------------------------------------------------->
+	<!------------------------------------------------Fechamento Painel Cabeçalho Avaliação do Evento---------------------------------------------------->
+
+	<!-- Início  Dados do Solicitante -->
+
+	<div class="panel-internal" id="DadosSolicitantes">
+	<div class="panel-h">
+		<h3 class="panel-title"><b>1. Dados do Solicitante</b></h3>
+	</div>
+	<div class="panel-body">
+	<div class="row">
+	<div class="col-md-4">
+		<label for="slc_NomeSolicitante">Nome do Solicitante</label>
+		<select class="form-control" name="slc_NomeSolicitante" id="slc_NomeSolicitante"
+			dataset="colleague" datasetkey="colleagueId" datasetvalue="colleagueName"></select>
+	</div>
+	<div class="col-md-2">
+	<div class="form-group">
+		<label for="dt_DataSolicita">Data e horário:</label>
+		<input type="text" class="form-control" name="dt_DataSolicita" id="dt_DataSolicita" readonly>
+	</div>
+	</div>
+	<div class="col-md-3">
+	<div class="form-group">
+		<label for="txt_NumProc">Numero da Solicitação:</label>
+		<input type="text" class="form-control" name="txt_NumProc" id="txt_NumProc">
+	</div>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-md-4">
+	<div class="form-group">
+		<label for="cmb_GerenteSolicitante">Superior para Aprovação:</label>
+		<!--<input type="text" class="form-control" name="cmb_GerenteSolicitante" id="cmb_GerenteSolicitante" readonly>
+		-->
+		<select 
+			name=			"cmb_GerenteSolicitante" 
+			id=				"cmb_GerenteSolicitante" 
+			dataset=		"dsc_Unidades" 
+			datasetkey=		"Matricula" 
+			datasetvalue=	"NomeGerente" 
+			class=			"form-control"
+			>
+		</select>
+	</div>
+	</div>
+	<div class="col-md-4">
+	<div class="form-group">
+		<label class="zm_UnidadeSolicitante">Unidade Solicitante:</label>
+		<input type="text" class="form-control" name="zm_UnidadeSolicitante" id="zm_UnidadeSolicitante" readonly>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+	<!-- FINAL - Dados do Solicitante -->
+
+	<!-- início Solicitação -->
+
+	<div class="panel-internal">
+	<div class="panel-h">
+		<h3 class="panel-title"><b>2. Solicitação</b></h3>
+	</div>
+	<div class="panel-body">
+	<div class="form-group  table-responsive">
+	<table class="table"> 
+	<tbody>
+		<tr>
+			<td>
+				<div class="col-md-2">
+					<button type="button" class="addRateio" onclick="addDado()"
+					id="addIns">Inserir Demanda</button>
+				</div>
+				<div class="custom-checkbox  custom-checkbox-primary col-md-7">
+					<input type="checkbox" name="cbk_Tipo" id="cbk_Tipo">
+					<label for="cbk_Tipo" ><b style="color:crimson;">Serviço prestado para o Interior</b></label>
+				</div>
+		</tr>
+		<table id="dados" tablename="dados" class="table table-hover" noaddbutton="true" nodeletebutton="true">
+			<thead>
+				<tr>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				<td><span class="fluig-style-guide fs-display-block fs-md-space">
+						<i type="button" class="fluigicon fluigicon-trash fluigicon-md delRateio"  id="deleta_rateio" name="deleta_rateio" 
+						onclick="Javascript:fnCustomDelete(this);verifc()" style="cursor:pointer"></i> 
+					</span>
+					</td>
+					<td>
+					
+						<div class="col-md-2">
+						<div class="form-group">
+						<label for="slc_TipoImpressao">Tipo de Serviço:</label>
+						<select class="form-control" id="slc_TipoImpressao" name="slc_TipoImpressao"
+							dataset="TipoImpressao" datasetkey="ValorImpressao" datasetvalue="DescImpressao"
+							onchange="calc02(this);verifc()">
+						</select>
+						<input type="hidden" name="hdn_TipoImpressao" id="hdn_TipoImpressao">
+						</div>
+						</div>
+						
+						<div class="col-md-2" id="encadern">
+						<div class="custom-checkbox-primary">
+							<input type="checkbox" name="cbk_encadern" id="cbk_encadern">
+							<label for="cbk_encadern">Encadernação</label>
+						</div>
+						</div>
+
+						<div class="col-md-1">
+						<div class="form-group">
+						<label for="txt_Quantidade">Quantidade:</label>
+						<input type="text" class="form-control" id="txt_Quantidade" name="txt_Quantidade"><!--onkeyup="calc01(this);verifc()"-->
+						</div>
+						</div>
+					
+						<div class="col-md-1" id="NPaginas">
+						<div class="form-group">
+						<label fro="txt_NPaginas">N° de Páginas:</label>
+						<input type="text" class="form-control" id="txt_NPaginas" name="txt_NPaginas"><!--onkeyup="calc01(this);verifc()"-->
+						</div>
+						</div>
+				
+						<div class="col-md-2" id="TotalCopias">
+						<div class="form-group">
+						<label for="txt_TotalCopias">Total de Cópias:</label>
+						<input type="text" class="form-control" id="txt_TotalCopias" name="txt_TotalCopias" readonly>
+						</div>
+						</div>	
+				
+						<div class="col-md-2">
+						<div class="form-group">
+						<label for="txt_Valor">Valor:</label>
+						<div class="input-group">
+						<input type="text" class="form-control" id="txt_Valor" name="txt_Valor" readonly>
+						<span class="input-group-addon">R$</span>
+						</div>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<div class="form-group">
+						<label for="txt_TipoDemanda">Tipo de Demanda:</label>
+						<textarea class="form-control" id="txt_TipoDemanda" name="txt_TipoDemanda"></textarea>
+						</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+	<div class="col-md-2 col-md-offset-10">
+		<label for="txt_ValorTotal">Valor Total:</label>	
+		<div class="input-group">
+		<input type="text" class="form-control" name="txt_ValorTotal" id="txt_ValorTotal" readonly>
+		<span class="input-group-addon">R$</span>
+		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+
+	<!-- FINAL - Solicitação -->
+
+	<!-- INICIO - DOTAÇÃO ORÇAMENTÁRIA -->
+	<div class="panel-money" id="painel_dadosrateio">
+	<div class="panel-h">
+		<h3 class="panel-title"> 
+			<b>3. Dotação Orçamentária</b>
+		</h3>
+	</div>
+		<!---------------------------------------------------Fechamento Painel com Cabeçalho Dotação Orçamentaria------------------------------------------->
+		<!-----------------------------------------------------Abertura Painel Dotação Orçamentaria--------------------------------------------------------->
+	<div class="panel-body">
+	<div class="col-md-9">
+	<div class="form-group">
+		<div style="display: none;">
+		<label for="txt_projeto">Projeto<span class="Obrigatorio"><strong>*</strong></span>:</label>													
+		<input 	type="zoom"  
+		id="txt_projeto"  
+		name="txt_projeto"
+		data-zoom="{
+		'displayKey':'NOME',
+		'datasetId':'dsprojeto',
+		'maximumSelectionLength':'1',
+		'placeholder':'Escolha o projeto',
+		'fields':[
+		{
+			'field':'CODCCUSTO',
+			'label':'CODIGO'
+		},{
+				'field':'NOME',
+				'label':'NOME',
+				'standard':'true'
+		}
+		]
+		}" ></div>
+		<div id="projetov" style="display: d;"></div>
+	</div>
+	</div>									
+	<div class="col-md-2">
+	<div class="form-group">
+		<label for="txt_saldo">Saldo:</label>	
+		<div class="input-group">
+		<input  class="form-control mm" type="text" name="txt_saldo" id="txt_saldo" readonly>
+		<span class="input-group-addon">R$</span>
+		</div>
+		<div class="form-group required errored" id="Msg_GuiaErro" style="display: none">
+		<div class="error">
+			Saldo insuficiente para demanda
+		</div> 
+		</div>	
+	</div>
+	</div>
+	<br>
+	<div class="col-md-9">
+	<div class="form-group">
+		<div style="display: none;">
+		<label for="txt_acao">Ação<span class="Obrigatorio"><strong>*</strong></span>:</label>
+		<input type="zoom" 
+		class="form-control" 
+		id="txt_acao" 
+		name="txt_acao"
+		data-zoom="{
+		'displayKey':'NOME',
+		'datasetId':'dsacao',
+		'maximumSelectionLength':'1',
+		'placeholder':'Escolha a ação',
+		'fields':[
+		{
+			'field':'CODCCUSTO',
+			'label':'CODIGO',
+			'search':'true'
+			
+		},{
+				'field':'NOME',
+				'label':'NOME',
+				'search':'true',
+				'standard':'true'
+		}
+		]
+		}"></div>
+		<div id="acaov" style="display: d;"></div>
+	</div> 
+	</div>
+	<br>
+	<div class="col-md-9">
+	<div class="form-group">
+		<div style="display: none;">
+		<label for="txt_recursos">Unidade<span class="Obrigatorio"><strong>*</strong></span>:</label>
+		<input type="zoom" 
+		class="form-control" 
+		id="txt_recursos" 
+		name="txt_recursos"
+		data-zoom="{
+		'displayKey':'NOME',
+		'datasetId':'dsunidade',
+		'maximumSelectionLength':'1',
+		'placeholder':'Escolha a unidade',
+		'fields':[
+		{
+			'field':'CODCCUSTO',
+			'label':'CODIGO'
+		},{
+				'field':'NOME',
+				'label':'NOME',
+				'standard':'true'
+		}
+		]
+		}" ></div>
+		<div id="unidadev" style="display: d;"></div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	<script>
+	var ratingnumbers1 = FLUIGC.stars(".rating-numbers1", {
+	stars: 4,
+	value: 0,
+	text: ['Insatisfeito', 'Parcialmente satisfeito', 'Satisfeito', 'Muito Satisfeito']
+	});
+	var ratingnumbers2 = FLUIGC.stars(".rating-numbers2", {
+	stars: 4,
+	value: 0,
+	text: ['Insatisfeito', 'Parcialmente satisfeito', 'Satisfeito', 'Muito Satisfeito']
+	});
+	var ratingnumbers3 = FLUIGC.stars(".rating-numbers3", {
+	stars: 4,
+	value: 0,
+	text: ['Insatisfeito', 'Parcialmente satisfeito', 'Satisfeito', 'Muito Satisfeito']
+	});
+
+	var pos = '0';
+	$('#rating_numbers1').val(pos);
+	if(ratingnumbers1.on("click", function(obj) {
+			pos = $(this).index();
+			var opt = ['1', '2', '3', '4'];
+			
+			$('#rating_numbers1').val(opt[pos]);
+	
+	}));
+	$('#rating_numbers2').val(pos);
+	if(ratingnumbers2.on("click", function(obj) {
+			pos = $(this).index();
+			var opt = ['1', '2', '3', '4'];
+			
+			$('#rating_numbers2').val(opt[pos]);
+	
+	}));
+	$('#rating_numbers3').val(pos);
+	if(ratingnumbers3.on("click", function(obj) {
+			pos = $(this).index();
+			var opt = ['1', '2', '3', '4'];
+			
+			$('#rating_numbers3').val(opt[pos]);
+	
+	}));
+	</script>
+
+	</form>
+	</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+.panel-top{
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background-color:#fff;
+    box-shadow:0 1px 1px rgba(0,0,0,.05);
+    border-color: #0070ba; 
+}
+.panel-critical{
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background-color:#fff;
+    box-shadow:0 1px 1px rgba(0,0,0,.05);
+    border-color: #b80000
+}
+.panel-internal{
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background-color:#fff;
+    box-shadow:0 1px 1px rgba(0,0,0,.05);
+    border-color: #0065a8
+}
+.panel-money{
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background-color:#fff;
+    box-shadow:0 1px 1px rgba(0,0,0,.05);
+    border-color: #00b386
+}
+.panel-h{
+    padding:10px 15px;
+    border-bottom:1px solid transparent;
+    border-top-left-radius:3px;
+    border-top-right-radius:3px
+}
+i{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.panel-top>
+.panel-h{
+    color:#fff;
+    border-color:#0070ba;
+    background-color:#0070ba
+}
+.panel-critical>
+.panel-h{
+    color:#fff;
+    border-color:#b80000;
+    background-color:#b80000
+}
+.panel-internal>
+.panel-h{
+    color:#fff;
+    border-color:#0065a8;
+    background-color:#0065a8
+}
+.panel-money>
+.panel-h{
+    color:#fff;
+    border-color:#00b386;
+    background-color:#00b386
+}
+
+
+/******************************************************************************************/
+.form-group.errored .error,
+
+.form-group.errored .warning,
+
+.form-group.warn .error,
+
+.form-group.warn .warning{
+    position:absolute;
+    z-index:10;
+    display:block;
+    max-width:450px;
+    padding:5px 8px;
+    margin:4px 0 0;
+    font-size:13px;
+    font-weight:400;
+    border-style:solid;
+    border-width:1px;
+    border-radius:3px
+}
+
+.form-group.errored .error:after,
+
+.form-group.errored .error:before,
+
+.form-group.errored .warning:after,
+
+.form-group.errored .warning:before,
+
+.form-group.warn .error:after,
+
+.form-group.warn .error:before,
+
+.form-group.warn .warning:after,
+
+.form-group.warn .warning:before{
+    position:absolute;
+    bottom:100%;
+    left:10px;
+    z-index:15;
+    width:0;
+    height:0;
+    pointer-events:none;
+    content:" ";
+    border:solid transparent
+}
+
+.form-group.errored .error:after,
+
+.form-group.errored .warning:after,
+
+.form-group.warn .error:after,
+
+.form-group.warn .warning:after{
+    border-width:5px
+}
+
+.form-group.errored .error:before,
+
+.form-group.errored .warning:before,
+
+.form-group.warn .error:before,
+
+.form-group.warn .warning:before{
+    margin-left:-1px;
+    border-width:6px
+}
+
+.form-group.warn .warning{
+    color:#735c0f;
+    background-color:#fffbdd;
+    border-color:#d9d0a5
+}
+
+.form-group.warn .warning:after{
+    border-bottom-color:#fffbdd
+}
+
+.form-group.warn .warning:before{
+    border-bottom-color:#d9d0a5
+}
+
+.form-group.errored label{
+    color:#cb2431
+}
+
+.form-group.errored .error{
+    color:#86181d;
+    background-color:#ffdce0;border-color:
+    #cea0a5
+}
+
+.form-group.errored .error:after{
+    border-bottom-color:#ffdce0
+}
+
+.form-group.errored .error:before{
+    border-bottom-color:#cea0a5
+}
